@@ -4,6 +4,7 @@ from torch.utils import data
 from torchvision import transforms as T
 from torchvision.transforms import functional as F
 import cv2
+"""Adapted from https://github.com/LeeJunHyun/Image_Segmentation/blob/master/data_loader.py"""
 
 
 class ImageFolder(data.Dataset):

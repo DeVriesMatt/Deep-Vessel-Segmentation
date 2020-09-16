@@ -6,6 +6,7 @@ import torch.nn.functional as F
 
 """Adapted from https://github.com/achaiah/pywick/blob/master/pywick/losses.py"""
 
+
 def dice_loss(prediction, target):
     """Calculating the dice loss
     Args:
@@ -22,7 +23,6 @@ def dice_loss(prediction, target):
     intersection = (i_flat * t_flat).sum()
 
     return 1 - ((2. * intersection + smooth) / (i_flat.sum() + t_flat.sum() + smooth))
-
 
 
 class BCELoss2d(nn.Module):
@@ -59,6 +59,7 @@ class SoftDiceLoss(nn.Module):
         # score = score.reshape(num, 1)
         # print(score.shape)
         return score
+
 
 class FocalLoss(nn.Module):
     """
@@ -163,11 +164,9 @@ class ComboBCEDiceLoss(nn.Module):
         super().to(device=device)
         self.bce_logits_loss.to(device=device)
 
-
     def reset_parameters(self):
         self.running_bce_loss.zero_()
         self.running_dice_loss.zero_()
-
 
     def forward(self, outputs, targets):
         # inputs and targets are assumed to be BxCxWxH (batch, color, width, height)

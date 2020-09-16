@@ -42,6 +42,7 @@ class Solver(object):
         # Training settings
         self.num_epochs = config.num_epochs
         self.num_epochs_decay = config.num_epochs_decay
+        self.decay_factor = config.decay_factor
         self.batch_size = config.batch_size
 
         # Step size
@@ -63,7 +64,7 @@ class Solver(object):
         if self.model_type == 'UNet':
             self.unet = UNet(n_channels=1, n_classes=1)
         elif self.model_type == 'R2U_Net':
-            self.unet = R2U_Net(img_ch=3, output_ch=1, t=self.t)  # TODO: changed for green image channel
+            self.unet = R2U_Net(img_ch=1, output_ch=1, t=self.t)  # TODO: changed for green image channel
         elif self.model_type == 'AttU_Net':
             self.unet = AttU_Net(img_ch=1, output_ch=1)
         elif self.model_type == 'R2AttU_Net':
@@ -82,8 +83,6 @@ class Solver(object):
                                     betas=tuple(self.beta_list))
         self.unet.to(self.device)
 
-    # summary(self.unet, input_size=(1, 48, 48), batch_size=30)
-
     def print_network(self, model, name):
         """Print out the network information."""
         num_params = 0
@@ -94,7 +93,7 @@ class Solver(object):
         print("The number of parameters: {}".format(num_params))
 
     def train(self):
-        scheduler = torch_scheduler.StepLR(self.num_epochs_decay, gamma=0.1)
+        scheduler = torch_scheduler.StepLR(self.num_epochs_decay, gamma=self.decay_factor)
         loss_plot_plan = os.path.join(self.result_path,
                                       'live_loss_plot%s-%d-%.4f-%d-%.4f.png' % (self.model_type,
                                                                                 self.num_epochs,

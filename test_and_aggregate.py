@@ -6,7 +6,7 @@ from torchvision import transforms
 import torchvision
 from tqdm import tqdm
 
-from data_loader import get_loader
+from loader import get_loader
 from networks import UNet, R2U_Net, AttU_Net, R2AttU_Net, NestedUNet, Iternet, AttUIternet, R2UIternet
 
 from torchvision import transforms as T
@@ -71,7 +71,7 @@ for i in tqdm(range(39, 46)):
     new_image.save("result/test_whole_image/HRF128/AttUNet/" + str(i).zfill(5) + ".png")
     new_true_GT.save("result/test_whole_image_true/HRF128/" + str(i).zfill(5) + ".png")
 
-    from evaluation import *
+    from metrics import *
 
     SR = Image.open("result/test_whole_image/HRF128/AttUNet/" + str(i).zfill(5) + ".png")
     GT = Image.open("result/test_whole_image_true/HRF128/" + str(i).zfill(5) + ".png")

@@ -2,8 +2,8 @@ import argparse
 import os
 import time
 
-from solver import Solver
-from data_loader import get_loader
+from trainer import Solver
+from loader import get_loader
 from torch.backends import cudnn
 
 """Adapted from https://github.com/LeeJunHyun/Image_Segmentation"""
@@ -13,7 +13,7 @@ def main(config):
     cudnn.benchmark = True
     if config.model_type not in ['UNet', 'R2U_Net', 'AttU_Net', 'R2AttU_Net', 'Iternet', 'AttUIternet', 'R2UIternet',
                                  'NestedUNet']:
-        print('ERROR!! model_type should be selected in U_Net/R2U_Net/AttU_Net/R2AttU_Net')
+        print('ERROR!! model_type should be selected in U_Net/R2U_Net/AttU_Net/R2AttU_Net/Iternet/AttUIternet/R2UIternet/NestedUNet')
         print('Your input for model_type was %s' % config.model_type)
         return
 
@@ -47,17 +47,15 @@ def main(config):
                              mode='test',
                              augmentation_prob=0.)
 
-
     solver = Solver(config, train_loader, valid_loader, test_loader)
 
-    if config.mode == 'train':
-        start = time.time()
-        history, results = solver.train()
-        stop = time.time()
-        training_time = stop - start
-        print(history)
-        print(results)
-        print("Training time: {}".format(training_time))
+    start = time.time()
+    history, results = solver.train()
+    stop = time.time()
+    training_time = stop - start
+    print(history)
+    print(results)
+    print("Training time: {}".format(training_time))
 
 
 if __name__ == '__main__':
@@ -72,6 +70,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_ch', type=int, default=1)
     parser.add_argument('--num_epochs', type=int, default=50)
     parser.add_argument('--num_epochs_decay', type=int, default=10)
+    parser.add_argument('--decay_factor', type=float, default=0.1)
     parser.add_argument('--batch_size', type=int, default=30)
     parser.add_argument('--num_workers', type=int, default=8)
     parser.add_argument('--lr', type=float, default=0.002)  # Original LR 0.0002
