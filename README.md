@@ -1,4 +1,8 @@
-# Deep-Vessel-Segmentation
+# MSc Artificial Intelligence Dissertation
+
+## Deep-Vessel-Segmentation
+
+
 This work uses multiple different segmentation repositories directly and indirectly. They can be found at (in no particular order):
 - https://github.com/LeeJunHyun/Image_Segmentation
 - https://github.com/HzFu/AGNet
